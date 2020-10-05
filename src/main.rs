@@ -1,18 +1,17 @@
-use actix_web::{get, web, App, HttpServer, Responder};
+mod objects;
+mod routes;
 
-#[get("/{name}")]
-async fn hello(web::Path(name): web::Path<String>) -> impl Responder {
-    format!("Hello, {}!", name)
-}
+use actix_web::{web, App, HttpServer};
+use objects::context::{config::Config, Context};
+use std::sync::Mutex;
 
-#[get("/")]
-async fn index() -> impl Responder {
-    "Hello, world!"
-}
+use routes::root;
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
-    HttpServer::new(|| App::new().service(index).service(hello))
+    let config = Config::from_file("config/config.toml").expect("Failed to load config.toml");
+    let data = web::Data::new(Mutex::new(Context { config }));
+    HttpServer::new(move || App::new().app_data(data.clone()).service(root()))
         .bind("127.0.0.1:8080")?
         .run()
         .await
