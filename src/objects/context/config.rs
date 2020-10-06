@@ -3,6 +3,7 @@ use serde::{Deserialize, Serialize};
 #[derive(Serialize, Deserialize)]
 pub struct Config {
     pub host: String,
+    pub database: Database,
 }
 
 impl Config {
@@ -11,4 +12,12 @@ impl Config {
         let config = toml::from_str(&file).ok()?;
         Some(config)
     }
+}
+
+#[derive(Serialize, Deserialize)]
+pub struct Database {
+    pub host: String,
+    pub user: String,
+    pub password: String,
+    pub database: String,
 }

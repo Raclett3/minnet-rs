@@ -1,1 +1,7 @@
 host = "example.com"
+
+[database]
+host = "localhost"
+user = "minnet"
+password = "minnet"
+database = "minnet"
