@@ -1,5 +1,11 @@
+#[macro_use]
+extern crate diesel;
+
+mod controllers;
+mod misc;
 mod objects;
 mod routes;
+mod schema;
 
 use actix_web::{web, App, HttpServer};
 use diesel::pg::PgConnection;
