@@ -956,6 +956,7 @@ dependencies = [
  "actix-web",
  "chrono",
  "diesel",
+ "rand",
  "serde",
  "serde_json",
  "toml",
