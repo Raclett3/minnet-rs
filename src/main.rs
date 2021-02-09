@@ -31,8 +31,7 @@ async fn main() -> std::io::Result<()> {
     let config = Config::from_file("config/config.toml").expect("Failed to load config.toml");
 
     let url = database_url(&config.database);
-    let conn = connection(&url)
-        .expect("Failed to establish ");
+    let conn = connection(&url).expect("Failed to establish ");
 
     let data = web::Data::new(Mutex::new(Context { config, conn }));
     HttpServer::new(move || App::new().app_data(data.clone()).service(root()))
