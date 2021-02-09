@@ -1,3 +1,5 @@
+#![allow(dead_code)]
+
 use diesel::pg::PgConnection;
 use diesel::Connection;
 use minnet_rs::objects::context::config::Config;
@@ -5,6 +7,7 @@ use minnet_rs::schema::{
     users::dsl::users,
     users_auth::dsl::users_auth,
 };
+use minnet_rs::objects::context;
 use diesel::prelude::*;
 
 pub fn init_test_connection() -> PgConnection {
@@ -21,4 +24,19 @@ pub fn init_test_connection() -> PgConnection {
     diesel::delete(users).execute(&conn).unwrap();
 
     conn
+}
+
+pub fn context_with_connection(conn: PgConnection) -> context::Context {
+    context::Context {
+        conn,
+        config: context::config::Config {
+            host: "example.com".to_string(),
+            database: context::config::Database {
+                host: "".to_string(),
+                user: "".to_string(),
+                password: "".to_string(),
+                database: "".to_string(),
+            }
+        }
+    }
 }

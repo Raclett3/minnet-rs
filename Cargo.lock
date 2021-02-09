@@ -1000,12 +1000,14 @@ dependencies = [
 name = "minnet-rs"
 version = "0.1.0"
 dependencies = [
+ "actix-rt",
  "actix-web",
  "bcrypt",
  "chrono",
  "diesel",
  "openssl",
  "rand",
+ "regex",
  "serde",
  "serde_json",
  "toml",

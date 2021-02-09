@@ -3,6 +3,7 @@ use crate::objects::others::well_known::*;
 use crate::objects::uri::users_uri;
 use crate::{json_response, unwrap_result_or_500};
 use actix_web::{web, HttpResponse, Scope};
+use regex::Regex;
 use serde::Deserialize;
 use std::sync::Mutex;
 
@@ -17,20 +18,30 @@ pub async fn webfinger(
 ) -> HttpResponse {
     let host = &unwrap_result_or_500!(data.lock()).config.host;
     if let Some(resource) = &query.resource {
-        println!("Webfinger: {}", resource);
-        let username = "fuyuko";
-        let subject = format!("acct:{}@{}", username, host);
-        let href = users_uri(host, username);
-        let links = vec![Link::new(
-            "self".to_string(),
-            "application/activity+json".to_string(),
-            href,
-        )];
-        let user = Webfinger::new(Some(subject), links);
-        json_response!(&user)
-    } else {
-        HttpResponse::NotFound().body("Query not present")
+        let pattern = format!("^acct:([a-zA-Z0-9]+)@{}$", host);
+        let re = unwrap_result_or_500!(Regex::new(&pattern));
+        let matched = re
+            .captures(&resource)
+            .and_then(|x| x.get(1))
+            .map(|x| x.as_str().to_lowercase());
+
+        if let Some(username) = matched {
+            println!("Webfinger: {}", resource);
+            let subject = format!("acct:{}@{}", username, host);
+            let href = users_uri(host, &username);
+            let links = vec![Link::new(
+                "self".to_string(),
+                "application/activity+json".to_string(),
+                href,
+            )];
+            let user = Webfinger::new(Some(subject), links);
+            return json_response!(&user);
+        }
     }
+
+    HttpResponse::NotFound()
+        .content_type("application/json")
+        .body("{}")
 }
 
 async fn nodeinfo(data: web::Data<Mutex<Context>>) -> HttpResponse {
