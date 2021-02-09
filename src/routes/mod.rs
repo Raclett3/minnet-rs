@@ -1,6 +1,6 @@
-mod nodeinfo;
-mod objects;
-mod well_known;
+pub mod nodeinfo;
+pub mod objects;
+pub mod well_known;
 
 use actix_web::{web, Scope};
 

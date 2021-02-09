@@ -1,4 +1,4 @@
-mod users;
+pub mod users;
 
 use actix_web::{web, Scope};
 

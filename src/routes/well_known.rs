@@ -7,11 +7,11 @@ use serde::Deserialize;
 use std::sync::Mutex;
 
 #[derive(Deserialize)]
-struct ResourceQuery {
-    resource: Option<String>,
+pub struct ResourceQuery {
+    pub resource: Option<String>,
 }
 
-async fn webfinger(
+pub async fn webfinger(
     query: web::Query<ResourceQuery>,
     data: web::Data<Mutex<Context>>,
 ) -> HttpResponse {
