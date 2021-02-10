@@ -12,19 +12,6 @@ pub fn root() -> Scope {
 }
 
 #[macro_export]
-macro_rules! json_response {
-    ($obj:expr) => {
-        if let Ok(json) = serde_json::to_string($obj) {
-            actix_web::HttpResponse::Ok()
-                .content_type("application/json")
-                .body(json)
-        } else {
-            actix_web::HttpResponse::InternalServerError().body("Internal Server Error")
-        }
-    };
-}
-
-#[macro_export]
 macro_rules! unwrap_option_or_500 {
     ($option:expr) => {
         if let Some(v) = $option {

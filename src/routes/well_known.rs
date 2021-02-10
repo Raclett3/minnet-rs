@@ -1,7 +1,7 @@
 use crate::objects::context::Context;
 use crate::objects::others::well_known::*;
 use crate::objects::uri::users_uri;
-use crate::{json_response, unwrap_result_or_500};
+use crate::unwrap_result_or_500;
 use actix_web::{web, HttpResponse, Scope};
 use regex::Regex;
 use serde::Deserialize;
@@ -35,7 +35,7 @@ pub async fn webfinger(
                 href,
             )];
             let user = Webfinger::new(Some(subject), links);
-            return json_response!(&user);
+            return HttpResponse::Ok().json(user);
         }
     }
 
@@ -52,7 +52,7 @@ async fn nodeinfo(data: web::Data<Mutex<Context>>) -> HttpResponse {
         format!("https://{}/nodeinfo/2.0", host),
     )];
     let nodeinfo = Webfinger::new(None, links);
-    json_response!(&nodeinfo)
+    HttpResponse::Ok().json(nodeinfo)
 }
 
 pub fn well_known() -> Scope {

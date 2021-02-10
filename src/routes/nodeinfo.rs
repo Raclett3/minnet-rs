@@ -1,9 +1,8 @@
-use crate::json_response;
 use crate::objects::others::nodeinfo::NodeInfo;
 use actix_web::{web, HttpResponse, Resource};
 
 async fn nodeinfo() -> HttpResponse {
-    json_response!(&NodeInfo::new("minnet", "0.0.0"))
+    HttpResponse::Ok().json(NodeInfo::new("minnet", "0.0.0"))
 }
 
 pub fn nodeinfo_route() -> Resource {

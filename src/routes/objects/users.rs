@@ -22,7 +22,7 @@ pub async fn users(
         let key_string = unwrap_result_or_500!(read_to_string("public.pem"));
         let key = PublicKey::new(&publickey_uri(host, user), &uri, &key_string);
         let person = Person::new(&uri, Some(user), Some(&inbox_url(host)), Some(key));
-        json_response!(&JsonLD::append_context(Object::Person(person)))
+        HttpResponse::Ok().json(JsonLD::append_context(Object::Person(person)))
     } else {
         HttpResponse::NotFound().body("Not found")
     }
