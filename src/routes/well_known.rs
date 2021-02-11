@@ -18,7 +18,7 @@ pub async fn webfinger(
 ) -> HttpResponse {
     let host = &unwrap_result_or_500!(data.lock()).config.host;
     if let Some(resource) = &query.resource {
-        let pattern = format!("^acct:([a-zA-Z0-9]+)@{}$", host);
+        let pattern = format!("^acct:([a-zA-Z0-9_]+)@{}$", host);
         let re = unwrap_result_or_500!(Regex::new(&pattern));
         let matched = re
             .captures(&resource)
