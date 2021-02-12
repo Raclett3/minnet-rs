@@ -1,3 +1,4 @@
+pub mod auth;
 pub mod nodeinfo;
 pub mod objects;
 pub mod well_known;
@@ -8,6 +9,7 @@ pub fn root() -> Scope {
     web::scope("/")
         .service(well_known::well_known())
         .service(nodeinfo::nodeinfo_route())
+        .service(auth::auth())
         .service(objects::objects())
 }
 
