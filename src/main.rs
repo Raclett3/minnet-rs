@@ -29,13 +29,14 @@ fn database_url(database: &Database) -> String {
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
     let config = Config::from_file("config/config.toml").expect("Failed to load config.toml");
+    let addr = format!("127.0.0.1:{}", config.port);
 
     let url = database_url(&config.database);
     let conn = connection(&url).expect("Failed to establish ");
 
     let data = web::Data::new(Mutex::new(Context { config, conn }));
     HttpServer::new(move || App::new().app_data(data.clone()).service(root()))
-        .bind("127.0.0.1:8080")?
+        .bind(addr)?
         .run()
         .await
 }

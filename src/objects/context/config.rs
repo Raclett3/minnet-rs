@@ -3,6 +3,7 @@ use serde::{Deserialize, Serialize};
 #[derive(Serialize, Deserialize)]
 pub struct Config {
     pub host: String,
+    pub port: usize,
     pub database: Database,
 }
 

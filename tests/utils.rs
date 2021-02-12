@@ -28,6 +28,7 @@ pub fn context_with_connection(conn: PgConnection) -> context::Context {
         conn,
         config: context::config::Config {
             host: "example.com".to_string(),
+            port: 8080,
             database: context::config::Database {
                 host: "".to_string(),
                 user: "".to_string(),
