@@ -6,9 +6,18 @@ pub enum TypePerson {
 }
 
 #[derive(Serialize, Deserialize, Debug)]
+pub enum TypePublicKey {
+    Key,
+}
+
+#[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
 pub struct PublicKey {
     pub id: String,
+
+    #[serde(rename = "type")]
+    pub object_type: TypePublicKey,
+
     pub owner: String,
     pub public_key_pem: String,
 }
@@ -17,6 +26,7 @@ impl PublicKey {
     pub fn new(id: &str, owner: &str, public_key_pem: &str) -> Self {
         Self {
             id: id.to_string(),
+            object_type: TypePublicKey::Key,
             owner: owner.to_string(),
             public_key_pem: public_key_pem.to_string(),
         }
